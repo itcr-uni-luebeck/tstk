@@ -3,9 +3,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
 	id("org.springframework.boot") version "3.0.2"
 	id("io.spring.dependency-management") version "1.1.0"
-	id("org.asciidoctor.convert") version "2.2.1"
-	kotlin("jvm") version "1.7.22"
-	kotlin("plugin.spring") version "1.7.22"
+	id("org.asciidoctor.convert") version "2.4.0"
+	kotlin("jvm") version "1.8.0"
+	kotlin("plugin.spring") version "1.8.0"
+	kotlin("kapt") version "1.8.0"
 }
 
 group = "de.uni-luebeck.itcrl"
@@ -23,6 +24,7 @@ repositories {
 }
 
 extra["snippetsDir"] = file("build/generated-snippets")
+val snippetsDir = extra["snippetsDir"] as File
 extra["springBootAdminVersion"] = "3.0.0-M4"
 
 dependencies {
@@ -35,7 +37,7 @@ dependencies {
 	implementation("de.codecentric:spring-boot-admin-starter-server")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+	kapt("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 	testImplementation("org.springframework.security:spring-security-test")
@@ -64,5 +66,5 @@ tasks.test {
 
 tasks.asciidoctor {
 	inputs.dir(snippetsDir)
-	dependsOn(test)
+	dependsOn(tasks.test)
 }
