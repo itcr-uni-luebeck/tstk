@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
 	id("org.springframework.boot") version "3.0.2"
 	id("io.spring.dependency-management") version "1.1.0"
-	id("org.asciidoctor.convert") version "2.4.0"
 	kotlin("jvm") version "1.8.0"
 	kotlin("plugin.spring") version "1.8.0"
 	kotlin("kapt") version "1.8.0"
@@ -23,10 +22,6 @@ repositories {
 	mavenCentral()
 }
 
-extra["snippetsDir"] = file("build/generated-snippets")
-val snippetsDir = extra["snippetsDir"] as File
-extra["springBootAdminVersion"] = "3.0.0-M4"
-
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-cache")
@@ -34,19 +29,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("de.codecentric:spring-boot-admin-starter-server")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	kapt("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 	testImplementation("org.springframework.security:spring-security-test")
-}
-
-dependencyManagement {
-	imports {
-		mavenBom("de.codecentric:spring-boot-admin-dependencies:${property("springBootAdminVersion")}")
-	}
 }
 
 tasks.withType<KotlinCompile> {
@@ -58,13 +45,4 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
-}
-
-tasks.test {
-	outputs.dir(snippetsDir)
-}
-
-tasks.asciidoctor {
-	inputs.dir(snippetsDir)
-	dependsOn(tasks.test)
 }

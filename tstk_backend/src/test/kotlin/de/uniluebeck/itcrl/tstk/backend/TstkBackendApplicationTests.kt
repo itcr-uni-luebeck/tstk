@@ -1,4 +1,4 @@
-package de.uniluebeck.itcrl.tstkbackend
+package de.uniluebeck.itcrl.tstk.backend
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
